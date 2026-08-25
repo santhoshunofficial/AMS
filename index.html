@@ -3,8 +3,9 @@
 </style></head><body><div id="root"></div><script>
 const state={role:'student',mode:'login',user:null,view:'dashboard',officials:[],appointments:[],dashboard:{},notifications:[],filter:'All',selectedOfficial:null};
 const departments=['Information Technology','Computer Science','Engineering','Administration','Examinations','Student Affairs','Finance'];const designations=['Staff','HOD','Dean','Principal','Director','Other Official'];
-const $=s=>doconst SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzc-bMkm1Rnn_Ebm8ojwSRhmICpuKWxx4ZXwHXB45y156C7dpX5CVZJJb_sfc6JCOSq2g/exec";
+const $ = s => document.querySelector(s);
 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzc-bMkm1Rnn_Ebm8ojwSRhmICpuKWxx4ZXwHXB45y156C7dpX5CVZJJb_sfc6JCOSq2g/exec";
 async function run(fn, data) {
   try {
     const response = await fetch(SCRIPT_URL + "?action=" + fn, {
