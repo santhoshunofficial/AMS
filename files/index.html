@@ -1,0 +1,1857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MIT Campus AMS - Appointment Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #031636;
+      --blue: #0058be;
+      --ink: #191c1d;
+      --muted: #44474e;
+      --line: #e1e3e4;
+      --bg: #f8f9fa;
+      --green: #10b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --success: #059669;
+      --gray: #75777f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font: 14px Inter, Arial, sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      border: 0;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* ==================== AUTH LAYOUT ==================== */
+    .auth {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      background: radial-gradient(circle at 75% 12%, #dbeafe 0, transparent 26%), var(--bg);
+    }
+
+    .auth-card {
+      width: min(100%, 512px);
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 34px;
+      box-shadow: 0 12px 32px #0f172a12;
+    }
+
+    .brand {
+      text-align: center;
+    }
+
+    .crest {
+      display: inline-grid;
+      place-items: center;
+      width: 48px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--navy);
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .brand h1 {
+      font-size: 30px;
+      margin: 12px 0 6px;
+      color: var(--navy);
+    }
+
+    .brand p, .sub {
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .role-tabs {
+      display: flex;
+      gap: 8px;
+      background: var(--bg);
+      padding: 5px;
+      border-radius: 10px;
+      margin: 24px 0;
+    }
+
+    .role-tabs button {
+      flex: 1;
+      padding: 10px;
+      border-radius: 7px;
+      background: transparent;
+      color: var(--muted);
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .role-tabs .active {
+      background: #fff;
+      color: var(--blue);
+      box-shadow: 0 1px 3px #0001;
+      font-weight: 700;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+      margin: 14px 0;
+    }
+
+    .field label {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .field input,
+    .field select,
+    .field textarea,
+    .search {
+      padding: 13px;
+      border: 1px solid #c5c6cf;
+      border-radius: 8px;
+      background: #fff;
+      width: 100%;
+      outline-color: var(--blue);
+      transition: border-color 0.2s;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--blue);
+      outline: 2px solid #0058be22;
+    }
+
+    .field textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .error {
+      border-color: var(--red) !important;
+    }
+
+    .error-message {
+      color: var(--red);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .primary {
+      background: var(--blue);
+      color: #fff;
+      border-radius: 8px;
+      padding: 12px 18px;
+      font-weight: 700;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+
+    .primary:hover:not(:disabled) {
+      background: #0047a3;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px #0058be30;
+    }
+
+    .primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .secondary {
+      background: #fff;
+      border: 1px solid #c5c6cf;
+      border-radius: 8px;
+      padding: 11px 16px;
+      font-weight: 700;
+      color: var(--ink);
+      transition: all 0.2s;
+      display: inline-block;
+    }
+
+    .secondary:hover:not(:disabled) {
+      background: var(--bg);
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .secondary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .wide {
+      width: 100%;
+      margin-top: 12px;
+    }
+
+    .switch {
+      text-align: center;
+      color: var(--muted);
+      margin: 18px 0 0;
+    }
+
+    .link {
+      color: var(--blue);
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      background: none;
+      padding: 0;
+    }
+
+    /* ==================== APP LAYOUT ==================== */
+    .app {
+      min-height: 100vh;
+      padding-left: 280px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 280px;
+      background: var(--navy);
+      padding: 24px 12px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      z-index: 5;
+      box-shadow: 0 8px 26px #0003;
+      overflow-y: auto;
+    }
+
+    .side-brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      padding: 0 12px 48px;
+      border-bottom: 1px solid #0058be44;
+      margin-bottom: 24px;
+    }
+
+    .side-brand b {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .side-brand small {
+      display: block;
+      color: #ffffffb5;
+      margin-top: 4px;
+      font-size: 11px;
+    }
+
+    .nav {
+      display: grid;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .nav button {
+      background: transparent;
+      color: #ffffffb5;
+      text-align: left;
+      padding: 13px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .nav button:hover {
+      background: #0058be22;
+      color: #fff;
+    }
+
+    .nav button.active {
+      background: #0058be22;
+      color: #fff;
+      border-left: 4px solid var(--blue);
+      padding-left: 20px;
+    }
+
+    .logout {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid #0058be44;
+    }
+
+    .user-info {
+      color: #ffffffb5;
+      font-size: 12px;
+      padding: 12px 24px;
+      margin-bottom: 12px;
+      background: #0058be22;
+      border-radius: 8px;
+    }
+
+    .user-info b {
+      display: block;
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+
+    /* ==================== MAIN CONTENT ==================== */
+    .main {
+      flex: 1;
+      padding: 40px 32px;
+      max-width: 1600px;
+      margin: auto;
+      width: 100%;
+    }
+
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 36px;
+    }
+
+    .page-head h1 {
+      font-size: 38px;
+      letter-spacing: -1px;
+      margin: 0 0 7px;
+      color: var(--navy);
+    }
+
+    .page-head-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    /* ==================== DASHBOARD STATS ==================== */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    .card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: 0 1px 2px #0000000d;
+    }
+
+    .stat {
+      padding: 23px;
+      border-top: 4px solid var(--blue);
+    }
+
+    .stat.amber {
+      border-color: var(--amber);
+    }
+
+    .stat.green {
+      border-color: var(--green);
+    }
+
+    .stat.gray {
+      border-color: var(--gray);
+    }
+
+    .stat label {
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.7px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 32px;
+      margin: 9px 0;
+      color: var(--navy);
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* ==================== GRID LAYOUTS ==================== */
+    .grid2 {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .panel {
+      padding: 24px;
+    }
+
+    .panel h2 {
+      font-size: 18px;
+      margin: 0 0 18px;
+      color: var(--navy);
+    }
+
+    .panel > hr {
+      border: none;
+      border-top: 1px solid var(--line);
+      margin: 18px 0;
+    }
+
+    .activity,
+    .notification,
+    .appointment-item {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .activity:last-child,
+    .notification:last-child,
+    .appointment-item:last-child {
+      border: 0;
+    }
+
+    .activity b,
+    .notification b,
+    .appointment-item b {
+      display: block;
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    /* ==================== STEPPER ==================== */
+    .stepper {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 22px;
+      color: var(--muted);
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .stepper i {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 2px solid var(--muted);
+      font-style: normal;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .stepper .on {
+      background: var(--navy);
+      color: #fff;
+      border-color: var(--navy);
+    }
+
+    /* ==================== FILTERS & PILLS ==================== */
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 22px 0;
+    }
+
+    .pill {
+      border: 1px solid #c5c6cf;
+      border-radius: 999px;
+      background: #fff;
+      padding: 10px 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .pill:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+
+    .pill.active {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+
+    /* ==================== OFFICIALS GRID ==================== */
+    .officials {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .official {
+      padding: 24px;
+      min-height: 245px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #e0edff;
+      color: var(--blue);
+      display: grid;
+      place-items: center;
+      font-size: 19px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .official-top {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .official h3 {
+      margin: 0;
+      font-size: 18px;
+      color: var(--navy);
+    }
+
+    .badge {
+      border-radius: 5px;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-block;
+      margin-top: 2px;
+    }
+
+    .badge.available,
+    .badge.APPROVED {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge.PENDING {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge.REJECTED {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .badge.COMPLETED {
+      background: #e5e7eb;
+      color: #374151;
+    }
+
+    .official footer {
+      border-top: 1px solid var(--line);
+      padding-top: 15px;
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    /* ==================== FORMS ==================== */
+    .appointment-form {
+      max-width: 960px;
+    }
+
+    .availability-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .availability-day {
+      padding: 16px;
+      background: var(--bg);
+      border-radius: 8px;
+    }
+
+    .availability-day h4 {
+      margin: 0 0 12px;
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    .availability-day.unavailable {
+      opacity: 0.6;
+    }
+
+    .time-slots {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 8px;
+    }
+
+    .time-slot {
+      padding: 10px;
+      border: 1px solid #c5c6cf;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+      background: #fff;
+      transition: all 0.2s;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .time-slot:hover {
+      border-color: var(--blue);
+      background: #e0edff;
+    }
+
+    .time-slot.selected {
+      background: var(--blue);
+      color: #fff;
+      border-color: var(--blue);
+    }
+
+    .time-slot.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* ==================== TABLE ==================== */
+    .table-wrap {
+      overflow: auto;
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+      padding: 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    .table th {
+      background: var(--bg);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .table td {
+      color: var(--ink);
+    }
+
+    .table tbody tr:hover {
+      background: #f8fbff;
+    }
+
+    /* ==================== ACTIONS ==================== */
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* ==================== ALERTS & NOTICES ==================== */
+    .notice {
+      background: #eff6ff;
+      color: #1e40af;
+      padding: 14px;
+      border-radius: 8px;
+      margin: 16px 0;
+      border-left: 4px solid var(--blue);
+    }
+
+    .alert {
+      padding: 14px 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+      border-left: 4px solid;
+    }
+
+    .alert.warning {
+      background: #fffbeb;
+      color: #92400e;
+      border-color: var(--amber);
+    }
+
+    .alert.error {
+      background: #fef2f2;
+      color: #991b1b;
+      border-color: var(--red);
+    }
+
+    .alert.success {
+      background: #f0fdf4;
+      color: #166534;
+      border-color: var(--green);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--muted);
+    }
+
+    .empty-state strong {
+      display: block;
+      color: var(--ink);
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    /* ==================== MODAL ==================== */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: #03163699;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      z-index: 10;
+      overflow-y: auto;
+    }
+
+    .modal-box {
+      background: #fff;
+      width: min(100%, 620px);
+      max-height: 90vh;
+      overflow-y: auto;
+      border-radius: 14px;
+      padding: 26px;
+      box-shadow: 0 20px 60px #00000030;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-close {
+      float: right;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close:hover {
+      color: var(--ink);
+    }
+
+    /* ==================== TOAST ==================== */
+    .toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      background: var(--navy);
+      color: white;
+      padding: 14px 18px;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px #0003;
+      z-index: 20;
+      animation: slideIn 0.3s ease;
+    }
+
+    .toast.success {
+      background: var(--green);
+    }
+
+    .toast.error {
+      background: var(--red);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    /* ==================== LOADING ==================== */
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid var(--blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* ==================== MOBILE ==================== */
+    .hamb {
+      display: none;
+      background: transparent;
+      color: var(--navy);
+      font-size: 24px;
+      position: fixed;
+      left: 20px;
+      top: 20px;
+      z-index: 6;
+    }
+
+    @media (max-width: 900px) {
+      .app {
+        padding-left: 0;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.2s;
+        width: 70vw;
+        max-width: 280px;
+      }
+
+      .sidebar.open {
+        transform: none;
+      }
+
+      .hamb {
+        display: block;
+      }
+
+      .main {
+        padding: 60px 20px 20px;
+      }
+
+      .page-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .page-head h1 {
+        font-size: 28px;
+      }
+
+      .stats,
+      .officials {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .grid2 {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .table {
+        font-size: 13px;
+      }
+
+      .table th,
+      .table td {
+        padding: 10px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .form-grid,
+      .stats,
+      .officials {
+        grid-template-columns: 1fr;
+      }
+
+      .auth-card {
+        padding: 24px;
+      }
+
+      .page-head h1 {
+        font-size: 24px;
+      }
+
+      .stepper {
+        font-size: 11px;
+      }
+
+      .stepper i {
+        width: 20px;
+        height: 20px;
+      }
+
+      .modal-box {
+        padding: 20px;
+      }
+
+      .time-slots {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="api.js"></script>
+  <script>
+    // ==================== STATE MANAGEMENT ====================
+    const state = {
+      user: null,
+      role: 'student',
+      mode: 'login',
+      view: 'dashboard',
+      officials: [],
+      appointments: [],
+      notifications: [],
+      dashboard: {},
+      selectedOfficial: null,
+      selectedAvailability: null,
+      filter: 'All',
+      query: '',
+      loading: false,
+      error: null,
+    };
+
+    const departments = ['Information Technology', 'Computer Science', 'Engineering', 'Administration', 'Examinations', 'Student Affairs', 'Finance'];
+    const designations = ['Staff', 'HOD', 'Dean', 'Principal', 'Director', 'Other Official'];
+    const appointmentPurposes = ['Academic Discussion', 'Project Discussion', 'Leave / Permission', 'Department Matter', 'Personal Discussion', 'Other'];
+    const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+
+    // ==================== DOM HELPERS ====================
+    const $ = s => document.querySelector(s);
+    const $$ = s => document.querySelectorAll(s);
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[c]));
+
+    // ==================== UI HELPERS ====================
+    function toast(message, type = 'info') {
+      const el = document.createElement('div');
+      el.className = `toast ${type}`;
+      el.textContent = message;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 3500);
+    }
+
+    function modal(title, body, onClose = null) {
+      document.body.insertAdjacentHTML('beforeend', `
+        <div class="modal">
+          <div class="modal-box">
+            <button class="modal-close" id="closeModal">✕</button>
+            <h2>${esc(title)}</h2>
+            ${body}
+          </div>
+        </div>
+      `);
+      const closeBtn = $('#closeModal');
+      closeBtn.onclick = () => {
+        $('.modal').remove();
+        if (onClose) onClose();
+      };
+      $('.modal').onclick = (e) => {
+        if (e.target.classList.contains('modal')) {
+          $('.modal').remove();
+          if (onClose) onClose();
+        }
+      };
+    }
+
+    function createField(name, label, type = 'text', options = []) {
+      if (type === 'select') {
+        return `
+          <div class="field">
+            <label>${esc(label)}</label>
+            <select name="${name}" required>
+              <option value="">Select ${label.toLowerCase()}...</option>
+              ${options.map(opt => `<option value="${opt}">${esc(opt)}</option>`).join('')}
+            </select>
+          </div>
+        `;
+      } else if (type === 'textarea') {
+        return `
+          <div class="field">
+            <label>${esc(label)}</label>
+            <textarea name="${name}" rows="4"></textarea>
+          </div>
+        `;
+      } else {
+        return `
+          <div class="field">
+            <label>${esc(label)}</label>
+            <input type="${type}" name="${name}" placeholder="${esc(label)}" required>
+          </div>
+        `;
+      }
+    }
+
+    // ==================== RENDER FUNCTIONS ====================
+    function render() {
+      $('#root').innerHTML = state.user ? renderApp() : renderAuth();
+      bind();
+    }
+
+    function renderAuth() {
+      const isLogin = state.mode === 'login';
+      return `
+        <div class="auth">
+          <div class="auth-card">
+            <div class="brand">
+              <div class="crest">AMS</div>
+              <h1>MIT Campus</h1>
+              <p>Appointment Management System</p>
+            </div>
+
+            <div class="role-tabs">
+              <button class="active" data-role="student">Student</button>
+              <button data-role="official">Official</button>
+            </div>
+
+            <form id="authForm">
+              ${isLogin ? renderLoginForm() : renderRegisterForm()}
+              <button type="submit" class="primary wide" id="submitBtn">
+                ${isLogin ? 'Sign In' : 'Create Account'}
+              </button>
+              <div class="switch">
+                ${isLogin ? "Don't have an account? " : 'Already have an account? '}
+                <button type="button" id="switchMode" class="link">
+                  ${isLogin ? 'Sign up' : 'Sign in'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderLoginForm() {
+      return `
+        <div style="margin: 24px 0;">
+          ${createField('email', 'Email Address', 'email')}
+          ${createField('password', 'Password', 'password')}
+        </div>
+      `;
+    }
+
+    function renderRegisterForm() {
+      if (state.role === 'student') {
+        return `
+          <div style="margin: 24px 0;">
+            <div class="form-grid">
+              ${createField('name', 'Full Name')}
+              ${createField('registerNumber', 'Register Number')}
+              ${createField('email', 'Email Address', 'email')}
+              ${createField('department', 'Department', 'select', departments)}
+              ${createField('year', 'Year', 'select', ['1st Year', '2nd Year', '3rd Year', '4th Year'])}
+              ${createField('contactNumber', 'Contact Number')}
+              ${createField('password', 'Password', 'password')}
+              ${createField('confirmPassword', 'Confirm Password', 'password')}
+            </div>
+          </div>
+        `;
+      } else {
+        return `
+          <div style="margin: 24px 0;">
+            <div class="form-grid">
+              ${createField('name', 'Full Name')}
+              ${createField('employeeId', 'Employee ID')}
+              ${createField('email', 'Email Address', 'email')}
+              ${createField('department', 'Department', 'select', departments)}
+              ${createField('designation', 'Designation', 'select', designations)}
+              ${createField('contactNumber', 'Contact Number')}
+              ${createField('password', 'Password', 'password')}
+              ${createField('confirmPassword', 'Confirm Password', 'password')}
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function renderApp() {
+      return `
+        <div class="app">
+          <div class="sidebar">
+            <div class="side-brand">
+              <div class="avatar" style="width: 40px; height: 40px; margin: 0;">
+                ${esc(state.user.Name.split(' ').map(x => x[0]).slice(0, 2).join(''))}
+              </div>
+              <div>
+                <b>${esc(state.user.Name.split(' ')[0])}</b>
+                <small>${state.user.role === 'student' ? 'Student' : 'Official'}</small>
+              </div>
+            </div>
+
+            <div class="nav">
+              <button data-view="dashboard" class="active">Dashboard</button>
+              <button data-view="appointments">Appointments</button>
+              ${state.user.role === 'student' ? '<button data-view="request">Request Appointment</button>' : '<button data-view="availability">Manage Availability</button>'}
+              <button data-view="notifications">Notifications</button>
+              <button data-view="profile">Profile</button>
+            </div>
+
+            <button id="logout" class="logout secondary wide" style="margin: 0; text-align: center;">
+              Sign out
+            </button>
+          </div>
+
+          <button class="hamb" id="menu">☰</button>
+
+          <div class="main">
+            ${state.view === 'dashboard' ? renderDashboard() : ''}
+            ${state.view === 'appointments' ? renderAppointments() : ''}
+            ${state.view === 'request' ? renderRequest() : ''}
+            ${state.view === 'availability' ? renderAvailability() : ''}
+            ${state.view === 'notifications' ? renderNotifications() : ''}
+            ${state.view === 'profile' ? renderProfile() : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderDashboard() {
+      const d = state.dashboard;
+      return `
+        <header class="page-head">
+          <div>
+            <h1>Dashboard</h1>
+            <p class="sub">Welcome back, ${esc(state.user.Name.split(' ')[0])}!</p>
+          </div>
+        </header>
+
+        <div class="stats">
+          <div class="card stat">
+            <label>Pending Requests</label>
+            <strong>${d.pending || 0}</strong>
+            <span>Awaiting response</span>
+          </div>
+          <div class="card stat amber">
+            <label>Approved</label>
+            <strong>${d.approved || 0}</strong>
+            <span>Scheduled appointments</span>
+          </div>
+          <div class="card stat green">
+            <label>Completed</label>
+            <strong>${d.completed || 0}</strong>
+            <span>Finished meetings</span>
+          </div>
+          <div class="card stat gray">
+            <label>Today</label>
+            <strong>${d.today || 0}</strong>
+            <span>Scheduled for today</span>
+          </div>
+        </div>
+
+        ${(d.upcoming && d.upcoming.length > 0) ? `
+          <div class="grid2">
+            <div class="card panel">
+              <h2>Upcoming Appointments</h2>
+              ${d.upcoming.map(a => `
+                <div class="appointment-item">
+                  <b>${esc(state.user.role === 'student' ? a.OfficialName : a.StudentName)}</b>
+                  <p>${esc(a.Purpose)}</p>
+                  <div class="muted">
+                    ${a.AllocatedDate ? a.AllocatedDate + ' at ' + (a.AllocatedTime || 'TBD') : 'Pending scheduling'}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+            <div class="card panel">
+              <h2>Notifications</h2>
+              ${state.notifications.slice(0, 3).map(n => `
+                <div class="notification ${n.IsRead === 'FALSE' ? 'unread' : ''}">
+                  <b>${esc(n.Title)}</b>
+                  <div class="muted">${esc(n.CreatedAt.split('T')[0])}</div>
+                </div>
+              `).join('') || '<p class="sub">No new notifications</p>'}
+            </div>
+          </div>
+        ` : `
+          <div class="alert warning">
+            ${state.user.role === 'student' 
+              ? 'No upcoming appointments. <a href="javascript:void(0)" onclick="state.view=\'request\'; render();" class="link">Request an appointment</a>'
+              : 'No upcoming appointments scheduled.'}
+          </div>
+        `}
+      `;
+    }
+
+    function renderAppointments() {
+      return `
+        <header class="page-head">
+          <div>
+            <h1>Appointments</h1>
+            <p class="sub">View and manage your appointment requests</p>
+          </div>
+        </header>
+
+        ${state.appointments.length === 0 ? `
+          <div class="card">
+            <div class="empty-state">
+              <strong>No appointments yet</strong>
+              <p>${state.user.role === 'student' ? 'Create your first appointment request to get started.' : 'You have no pending appointments.'}</p>
+            </div>
+          </div>
+        ` : `
+          <div class="card">
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>${state.user.role === 'student' ? 'Official' : 'Student'}</th>
+                    <th>Purpose</th>
+                    <th>Requested Date</th>
+                    <th>Allocated Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${state.appointments.map(a => `
+                    <tr>
+                      <td><strong>${esc(state.user.role === 'student' ? a.OfficialName : a.StudentName)}</strong></td>
+                      <td>${esc(a.Purpose)}</td>
+                      <td>${a.RequestedDate}</td>
+                      <td>${a.AllocatedDate ? a.AllocatedDate + ' at ' + a.AllocatedTime : '-'}</td>
+                      <td><span class="badge ${a.Status}">${a.Status}</span></td>
+                      <td>
+                        <div class="actions">
+                          ${a.Status === 'PENDING' && state.user.role === 'official' ? `
+                            <button class="secondary" style="padding: 6px 12px; font-size: 12px;" data-schedule="${a.AppointmentID}">Approve</button>
+                            <button class="secondary" style="padding: 6px 12px; font-size: 12px;" data-reject="${a.AppointmentID}">Reject</button>
+                          ` : ''}
+                        </div>
+                      </td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `}
+      `;
+    }
+
+    function renderRequest() {
+      if (!state.selectedOfficial) {
+        return renderOfficialSelector();
+      }
+      return renderAppointmentForm();
+    }
+
+    function renderOfficialSelector() {
+      const filtered = state.officials.filter(o => 
+        !state.query || 
+        o.Name.toLowerCase().includes(state.query.toLowerCase()) ||
+        o.Department.toLowerCase().includes(state.query.toLowerCase())
+      );
+
+      return `
+        <header class="page-head">
+          <div>
+            <h1>Request an Appointment</h1>
+            <p class="sub">Step 1: Select an official</p>
+          </div>
+        </header>
+
+        <div class="card panel" style="margin-bottom: 24px;">
+          <input type="text" class="search" id="officialSearch" placeholder="Search by name, department, or designation...">
+        </div>
+
+        ${filtered.length === 0 ? `
+          <div class="card">
+            <div class="empty-state">
+              <strong>No officials found</strong>
+              <p>Try adjusting your search filters</p>
+            </div>
+          </div>
+        ` : `
+          <div class="officials">
+            ${filtered.map(o => `
+              <div class="card official">
+                <div class="official-top">
+                  <div class="avatar">${esc(o.Name.split(' ').map(x => x[0]).slice(0, 2).join(''))}</div>
+                  <div>
+                    <h3>${esc(o.Name)}</h3>
+                    <p class="sub">${esc(o.Designation)}</p>
+                  </div>
+                </div>
+                <p class="sub">${esc(o.Department)}</p>
+                ${o.ContactNumber ? `<p class="sub">${esc(o.ContactNumber)}</p>` : ''}
+                <footer>
+                  <span class="badge available">Available</span>
+                  <button class="link" data-select="${o.OfficialID}">Select</button>
+                </footer>
+              </div>
+            `).join('')}
+          </div>
+        `}
+      `;
+    }
+
+    function renderAppointmentForm() {
+      const o = state.selectedOfficial;
+      return `
+        <div class="stepper">
+          <i class="on">1</i> Select Official <b>›</b>
+          <i class="on">2</i> Choose Time <b>›</b>
+          <i>3</i> Confirm Details
+        </div>
+
+        <header class="page-head">
+          <div>
+            <h1>Request an Appointment</h1>
+            <p class="sub">Meeting with <b>${esc(o.Name)}</b> · ${esc(o.Designation)}, ${esc(o.Department)}</p>
+          </div>
+          <button class="secondary" onclick="state.selectedOfficial = null; render();">Change Official</button>
+        </header>
+
+        <form id="appointmentForm" class="card panel appointment-form">
+          <div class="form-grid">
+            ${createField('purpose', 'Purpose', 'select', appointmentPurposes)}
+            ${createField('requestedDate', 'Preferred Date', 'date')}
+            ${createField('preferredTime', 'Preferred Time', 'time')}
+          </div>
+
+          ${createField('description', 'Description (Optional)', 'textarea')}
+
+          <div class="notice">
+            The preferred date and time are subject to confirmation by the official.
+          </div>
+
+          <button type="submit" class="primary">Review & Submit Request</button>
+        </form>
+      `;
+    }
+
+    function renderAvailability() {
+      const current = state.selectedAvailability || {};
+      return `
+        <header class="page-head">
+          <div>
+            <h1>Manage Availability</h1>
+            <p class="sub">Set the hours when students can request meetings</p>
+          </div>
+        </header>
+
+        <form id="availabilityForm" class="card panel appointment-form">
+          <div class="availability-grid">
+            ${days.map(day => {
+              const existing = state.appointments.find(a => a.day === day) || {};
+              return `
+                <div class="availability-day">
+                  <h4>${day}</h4>
+                  <div class="form-grid">
+                    <div class="field">
+                      <label>Availability Status</label>
+                      <select name="${day}-enabled">
+                        <option value="true">Available</option>
+                        <option value="false">Not Available</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label>Hours (e.g., 09:00 - 17:00)</label>
+                      <input type="text" name="${day}-hours" placeholder="09:00 - 17:00" value="09:00 - 17:00">
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+
+          <button type="submit" class="primary" style="margin-top: 24px;">Save Availability</button>
+        </form>
+      `;
+    }
+
+    function renderNotifications() {
+      return `
+        <header class="page-head">
+          <div>
+            <h1>Notifications</h1>
+            <p class="sub">Stay up to date with your appointment activity</p>
+          </div>
+          ${state.notifications.some(n => n.IsRead === 'FALSE') ? `
+            <button class="secondary" id="readAll">Mark all as read</button>
+          ` : ''}
+        </header>
+
+        ${state.notifications.length === 0 ? `
+          <div class="card">
+            <div class="empty-state">
+              <strong>No notifications</strong>
+              <p>Your notifications will appear here</p>
+            </div>
+          </div>
+        ` : `
+          <div class="card panel">
+            ${state.notifications.map(n => `
+              <div class="notification ${n.IsRead === 'FALSE' ? 'unread' : ''}">
+                <b>${esc(n.Title)}</b>
+                <p>${esc(n.Message)}</p>
+                <div class="muted">${esc(n.CreatedAt)}</div>
+              </div>
+            `).join('')}
+          </div>
+        `}
+      `;
+    }
+
+    function renderProfile() {
+      const u = state.user;
+      const fields = state.user.role === 'student' 
+        ? [
+            ['Register Number', u.RegisterNumber],
+            ['Department', u.Department],
+            ['Year', u.Year],
+            ['Contact Number', u.ContactNumber],
+          ]
+        : [
+            ['Employee ID', u.EmployeeID],
+            ['Designation', u.Designation],
+            ['Department', u.Department],
+            ['Contact Number', u.ContactNumber],
+          ];
+
+      return `
+        <header class="page-head">
+          <div>
+            <h1>Your Profile</h1>
+            <p class="sub">Your campus account details</p>
+          </div>
+        </header>
+
+        <div class="card panel appointment-form">
+          <div class="official-top">
+            <div class="avatar" style="width: 72px; height: 72px; font-size: 28px;">
+              ${esc(u.Name.split(' ').map(x => x[0]).slice(0, 2).join(''))}
+            </div>
+            <div>
+              <h2>${esc(u.Name)}</h2>
+              <p class="sub">${esc(u.Email)}</p>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="form-grid">
+            ${fields.map(([label, value]) => `
+              <div class="field">
+                <label>${label}</label>
+                <div style="padding: 8px; color: var(--muted);">${esc(value) || '-'}</div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }
+
+    // ==================== EVENT BINDING ====================
+    function bind() {
+      // Auth
+      $$('[data-role]').forEach(btn => {
+        btn.onclick = () => {
+          $$('[data-role]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.role = btn.dataset.role;
+        };
+      });
+
+      $('#switchMode')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        state.mode = state.mode === 'login' ? 'signup' : 'login';
+        render();
+      });
+
+      $('#authForm')?.addEventListener('submit', handleAuth);
+
+      // App
+      $$('[data-view]').forEach(btn => {
+        btn.onclick = (e) => {
+          e.preventDefault();
+          const view = btn.dataset.view;
+          $$('[data-view]').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.view = view;
+          render();
+        };
+        if (btn.dataset.view === state.view) {
+          btn.classList.add('active');
+        }
+      });
+
+      $('#logout')?.addEventListener('click', () => {
+        state.user = null;
+        state.view = 'dashboard';
+        state.mode = 'login';
+        render();
+      });
+
+      $('#menu')?.addEventListener('click', () => {
+        $('.sidebar')?.classList.toggle('open');
+      });
+
+      // Officials selector
+      $$('[data-select]').forEach(btn => {
+        btn.onclick = (e) => {
+          e.preventDefault();
+          const official = state.officials.find(o => o.OfficialID === btn.dataset.select);
+          if (official) {
+            state.selectedOfficial = official;
+            render();
+          }
+        };
+      });
+
+      // Appointment form
+      $('#appointmentForm')?.addEventListener('submit', handleCreateAppointment);
+
+      // Actions
+      $$('[data-schedule]').forEach(btn => {
+        btn.onclick = (e) => {
+          e.preventDefault();
+          const appointmentId = btn.dataset.schedule;
+          handleApproveModal(appointmentId);
+        };
+      });
+
+      $$('[data-reject]').forEach(btn => {
+        btn.onclick = (e) => {
+          e.preventDefault();
+          const appointmentId = btn.dataset.reject;
+          handleRejectModal(appointmentId);
+        };
+      });
+
+      // Search
+      $('#officialSearch')?.addEventListener('input', (e) => {
+        state.query = e.target.value;
+        render();
+      });
+
+      // Notifications
+      $('#readAll')?.addEventListener('click', handleReadAll);
+
+      // Availability
+      $('#availabilityForm')?.addEventListener('submit', handleSaveAvailability);
+    }
+
+    // ==================== EVENT HANDLERS ====================
+    async function handleAuth(e) {
+      e.preventDefault();
+      state.loading = true;
+      render();
+
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+
+      try {
+        let result;
+        if (state.mode === 'login') {
+          result = await api.login(data.email, data.password, state.role);
+        } else {
+          result = state.role === 'student' 
+            ? await api.registerStudent(data)
+            : await api.registerOfficial(data);
+        }
+
+        if (!result.success) {
+          toast(result.message, 'error');
+          state.loading = false;
+          return;
+        }
+
+        toast(result.message, 'success');
+
+        if (state.mode === 'signup') {
+          state.mode = 'login';
+          state.loading = false;
+          render();
+        } else {
+          state.user = result.data;
+          await loadUserData();
+          render();
+        }
+      } catch (err) {
+        console.error('Auth error:', err);
+        toast('An error occurred. Please try again.', 'error');
+      } finally {
+        state.loading = false;
+      }
+    }
+
+    async function loadUserData() {
+      const userId = state.user.id;
+      const role = state.user.role;
+
+      try {
+        const [dashboard, appointments, notifications, officials] = await Promise.all([
+          api.getDashboard(role, userId),
+          api.getAppointments(role, userId),
+          api.getNotifications(userId),
+          role === 'student' ? api.getOfficials() : Promise.resolve({ success: true, data: [] })
+        ]);
+
+        if (dashboard.success) state.dashboard = dashboard.data;
+        if (appointments.success) state.appointments = appointments.data || [];
+        if (notifications.success) state.notifications = notifications.data || [];
+        if (officials.success) state.officials = officials.data || [];
+      } catch (err) {
+        console.error('Error loading user data:', err);
+      }
+    }
+
+    async function handleCreateAppointment(e) {
+      e.preventDefault();
+      state.loading = true;
+
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+
+      try {
+        const result = await api.createAppointment(
+          state.user.id,
+          state.selectedOfficial.OfficialID,
+          data.purpose,
+          data.requestedDate,
+          data.preferredTime,
+          data.description
+        );
+
+        if (!result.success) {
+          toast(result.message, 'error');
+          state.loading = false;
+          return;
+        }
+
+        toast(result.message, 'success');
+        state.view = 'appointments';
+        state.selectedOfficial = null;
+        await loadUserData();
+        render();
+      } catch (err) {
+        console.error('Error creating appointment:', err);
+        toast('Failed to create appointment', 'error');
+      } finally {
+        state.loading = false;
+      }
+    }
+
+    function handleApproveModal(appointmentId) {
+      const appointment = state.appointments.find(a => a.AppointmentID === appointmentId);
+      if (!appointment) return;
+
+      const modalBody = `
+        <p><strong>${esc(appointment.StudentName)}</strong></p>
+        <p>Purpose: ${esc(appointment.Purpose)}</p>
+        <p>Requested: ${appointment.RequestedDate} at ${appointment.PreferredTime}</p>
+
+        <form id="scheduleForm">
+          ${createField('allocatedDate', 'Allocated Date', 'date')}
+          ${createField('allocatedTime', 'Allocated Time', 'time')}
+          ${createField('remarks', 'Remarks (Optional)', 'textarea')}
+          <button type="submit" class="primary wide" style="margin-top: 16px;">Confirm & Approve</button>
+        </form>
+      `;
+
+      modal('Schedule Appointment', modalBody, () => {});
+
+      $('#scheduleForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+
+        try {
+          const result = await api.approveAppointment(
+            appointmentId,
+            state.user.id,
+            data.allocatedDate,
+            data.allocatedTime,
+            data.remarks
+          );
+
+          if (!result.success) {
+            toast(result.message, 'error');
+            return;
+          }
+
+          toast(result.message, 'success');
+          $('.modal')?.remove();
+          await loadUserData();
+          render();
+        } catch (err) {
+          toast('Error approving appointment', 'error');
+        }
+      });
+    }
+
+    function handleRejectModal(appointmentId) {
+      const appointment = state.appointments.find(a => a.AppointmentID === appointmentId);
+      if (!appointment) return;
+
+      const modalBody = `
+        <p><strong>${esc(appointment.StudentName)}</strong> - ${esc(appointment.Purpose)}</p>
+
+        <form id="rejectForm">
+          ${createField('remarks', 'Reason for Rejection', 'textarea')}
+          <button type="submit" class="primary wide" style="margin-top: 16px;">Reject Request</button>
+        </form>
+      `;
+
+      modal('Reject Appointment', modalBody, () => {});
+
+      $('#rejectForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const remarks = formData.get('remarks');
+
+        if (!remarks || remarks.trim() === '') {
+          toast('Please provide a reason for rejection', 'warning');
+          return;
+        }
+
+        try {
+          const result = await api.rejectAppointment(
+            appointmentId,
+            state.user.id,
+            remarks
+          );
+
+          if (!result.success) {
+            toast(result.message, 'error');
+            return;
+          }
+
+          toast(result.message, 'success');
+          $('.modal')?.remove();
+          await loadUserData();
+          render();
+        } catch (err) {
+          toast('Error rejecting appointment', 'error');
+        }
+      });
+    }
+
+    async function handleReadAll(e) {
+      e.preventDefault();
+      try {
+        const result = await api.markNotificationsRead(state.user.id);
+        if (result.success) {
+          toast(result.message, 'success');
+          await loadUserData();
+          render();
+        } else {
+          toast(result.message, 'error');
+        }
+      } catch (err) {
+        toast('Error marking notifications as read', 'error');
+      }
+    }
+
+    async function handleSaveAvailability(e) {
+      e.preventDefault();
+      state.loading = true;
+
+      const formData = new FormData(e.target);
+      const items = days.map(day => {
+        const [start, end] = (formData.get(`${day}-hours`) || '09:00 - 17:00')
+          .split('-')
+          .map(t => t.trim());
+        return {
+          day,
+          startTime: start,
+          endTime: end,
+          isAvailable: formData.get(`${day}-enabled`) === 'true'
+        };
+      });
+
+      try {
+        const result = await api.saveAvailability(state.user.id, items);
+        if (!result.success) {
+          toast(result.message, 'error');
+          return;
+        }
+
+        toast(result.message, 'success');
+        await loadUserData();
+        render();
+      } catch (err) {
+        console.error('Error saving availability:', err);
+        toast('Failed to save availability', 'error');
+      } finally {
+        state.loading = false;
+      }
+    }
+
+    // ==================== INIT ====================
+    render();
+  </script>
+</body>
+</html>
