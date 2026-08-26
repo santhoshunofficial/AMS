@@ -1,0 +1,1 @@
+package com.mitcampus.ams.repository; import com.mitcampus.ams.entity.Appointment;import org.springframework.data.jpa.repository.JpaRepository;import java.util.*; public interface AppointmentRepository extends JpaRepository<Appointment,Long>{List<Appointment> findByStudentIdOrderByCreatedAtDesc(Long id);List<Appointment> findByOfficialIdOrderByCreatedAtDesc(Long id);}

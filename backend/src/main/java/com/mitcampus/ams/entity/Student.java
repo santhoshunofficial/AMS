@@ -1,0 +1,3 @@
+package com.mitcampus.ams.entity;
+import jakarta.persistence.*;import java.time.*;
+@Entity @Table(name="STUDENTS") public class Student { @Id @GeneratedValue(strategy=GenerationType.IDENTITY) @Column(name="STUDENT_ID") public Long id; public String name; @Column(name="REGISTER_NUMBER") public String registerNumber; public String department; @Column(name="YEAR_LEVEL") public String year; public String email; @Column(name="PASSWORD_HASH") public String passwordHash; @Column(name="CONTACT_NUMBER") public String contactNumber; @Column(name="CREATED_AT") public LocalDateTime createdAt=LocalDateTime.now(); }

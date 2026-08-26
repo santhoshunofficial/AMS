@@ -1,0 +1,1 @@
+package com.mitcampus.ams.dto; public record ApiResponse(boolean success,String message,Object data){public static ApiResponse ok(String m,Object d){return new ApiResponse(true,m,d);} public static ApiResponse fail(String m){return new ApiResponse(false,m,null);}}

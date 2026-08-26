@@ -1,0 +1,1 @@
+package com.mitcampus.ams.repository; import com.mitcampus.ams.entity.Availability;import org.springframework.data.jpa.repository.JpaRepository;import java.util.*; public interface AvailabilityRepository extends JpaRepository<Availability,Long>{List<Availability> findByOfficialId(Long id);void deleteByOfficialId(Long id);}

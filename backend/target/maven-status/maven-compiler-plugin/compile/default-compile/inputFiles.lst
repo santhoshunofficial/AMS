@@ -1,0 +1,17 @@
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\config\CorsConfig.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\controller\ApiController.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\dto\ApiResponse.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\dto\Requests.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\entity\Appointment.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\entity\Availability.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\entity\Notification.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\entity\Official.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\entity\Student.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\exception\GlobalExceptionHandler.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\MitCampusAmsApplication.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\repository\AppointmentRepository.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\repository\AvailabilityRepository.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\repository\NotificationRepository.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\repository\OfficialRepository.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\repository\StudentRepository.java
+C:\Users\TANISHQ A\Documents\Codex\2026-08-26\files-mentioned-by-the-user-index\outputs\MIT-CAMPUS-AMS\backend\src\main\java\com\mitcampus\ams\service\AmsService.java
